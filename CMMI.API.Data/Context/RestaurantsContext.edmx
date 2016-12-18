@@ -1,0 +1,624 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CMMIDemoContext.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cuisines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" Nullable="false" />
+          <Property Name="Cuisine" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Address2" Type="varchar" MaxLength="256" />
+          <Property Name="City" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="StateId" Type="smallint" Nullable="false" />
+          <Property Name="Zipcode" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="Longitude" Type="decimal" Precision="12" Scale="9" />
+          <Property Name="Latitude" Type="decimal" Precision="12" Scale="9" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Restaurants">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Restaurant" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LocationId" Type="int" Nullable="false" />
+          <Property Name="CuisineId" Type="smallint" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reviews">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="RestaurantId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Review" Type="varchar(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="States">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" Nullable="false" />
+          <Property Name="State" Type="varbinary" MaxLength="50" Nullable="false" />
+          <Property Name="Abreviation" Type="char" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysErrors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Exception" Type="varchar" MaxLength="256" />
+          <Property Name="Message" Type="varchar" MaxLength="256" />
+          <Property Name="Stack" Type="varchar(max)" Nullable="false" />
+          <Property Name="Details" Type="varchar(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SysTrace">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" />
+          <Property Name="LogType" Type="varchar" MaxLength="50" />
+          <Property Name="Message" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="256" />
+          <Property Name="LastName" Type="varchar" MaxLength="256" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CMMIDemo.dbo.ViewRestaurants' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewRestaurants">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Restaurant" />
+            <PropertyRef Name="Cuisine" />
+            <PropertyRef Name="City" />
+            <PropertyRef Name="CreatedBy" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Restaurant" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cuisine" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CMMIDemo.dbo.ViewReviews' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ViewReviews">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Restaurant" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Review" />
+            <PropertyRef Name="CreatedDate" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Restaurant" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Review" Type="varchar(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Locations_States">
+          <End Role="States" Type="Self.States" Multiplicity="1" />
+          <End Role="Locations" Type="Self.Locations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="States">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Locations">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurants_Cuisines">
+          <End Role="Cuisines" Type="Self.Cuisines" Multiplicity="1" />
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuisines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Restaurants">
+              <PropertyRef Name="CuisineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurants_Locations">
+          <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Restaurants">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="RestaurantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysErrors_SysErrors">
+          <End Role="SysErrors" Type="Self.SysErrors" Multiplicity="0..1" />
+          <End Role="SysErrors1" Type="Self.SysErrors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysErrors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SysErrors1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CMMIDemoContextStoreContainer">
+          <EntitySet Name="Cuisines" EntityType="Self.Cuisines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Restaurants" EntityType="Self.Restaurants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysErrors" EntityType="Self.SysErrors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysTrace" EntityType="Self.SysTrace" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViewRestaurants" EntityType="Self.ViewRestaurants" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewRestaurants].[Id] AS [Id], 
+    [ViewRestaurants].[Restaurant] AS [Restaurant], 
+    [ViewRestaurants].[Cuisine] AS [Cuisine], 
+    [ViewRestaurants].[City] AS [City], 
+    [ViewRestaurants].[CreatedBy] AS [CreatedBy]
+    FROM [dbo].[ViewRestaurants] AS [ViewRestaurants]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ViewReviews" EntityType="Self.ViewReviews" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ViewReviews].[Id] AS [Id], 
+    [ViewReviews].[Restaurant] AS [Restaurant], 
+    [ViewReviews].[Username] AS [Username], 
+    [ViewReviews].[Review] AS [Review], 
+    [ViewReviews].[CreatedDate] AS [CreatedDate]
+    FROM [dbo].[ViewReviews] AS [ViewReviews]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Locations_States" Association="Self.FK_Locations_States">
+            <End Role="States" EntitySet="States" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurants_Cuisines" Association="Self.FK_Restaurants_Cuisines">
+            <End Role="Cuisines" EntitySet="Cuisines" />
+            <End Role="Restaurants" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurants_Locations" Association="Self.FK_Restaurants_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Restaurants" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Restaurants" Association="Self.FK_Reviews_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Users" Association="Self.FK_Reviews_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysErrors_SysErrors" Association="Self.FK_SysErrors_SysErrors">
+            <End Role="SysErrors" EntitySet="SysErrors" />
+            <End Role="SysErrors1" EntitySet="SysErrors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CMMIDemoContext" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cuisine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="Cuisine1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Restaurants" Relationship="Self.FK_Restaurants_Cuisines" FromRole="Cuisines" ToRole="Restaurants" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address2" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StateId" Type="Int16" Nullable="false" />
+          <Property Name="Zipcode" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Longitude" Type="Decimal" Precision="12" Scale="9" />
+          <Property Name="Latitude" Type="Decimal" Precision="12" Scale="9" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="State" Relationship="Self.FK_Locations_States" FromRole="Locations" ToRole="States" />
+          <NavigationProperty Name="Restaurants" Relationship="Self.FK_Restaurants_Locations" FromRole="Locations" ToRole="Restaurants" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Restaurant1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LocationId" Type="Int32" Nullable="false" />
+          <Property Name="CuisineId" Type="Int16" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Cuisine" Relationship="Self.FK_Restaurants_Cuisines" FromRole="Restaurants" ToRole="Cuisines" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Restaurants_Locations" FromRole="Restaurants" ToRole="Locations" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Restaurants" FromRole="Restaurants" ToRole="Reviews" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="RestaurantId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Review1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Reviews_Restaurants" FromRole="Reviews" ToRole="Restaurants" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Reviews_Users" FromRole="Reviews" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="State1" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+          <Property Name="Abreviation" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Locations" Relationship="Self.FK_Locations_States" FromRole="States" ToRole="Locations" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Users" FromRole="Users" ToRole="Reviews" />
+        </EntityType>
+        <Association Name="FK_Restaurants_Cuisines">
+          <End Role="Cuisines" Type="Self.Cuisine" Multiplicity="1" />
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cuisines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Restaurants">
+              <PropertyRef Name="CuisineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Locations_States">
+          <End Role="States" Type="Self.State" Multiplicity="1" />
+          <End Role="Locations" Type="Self.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="States">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Locations">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurants_Locations">
+          <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Restaurants">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="RestaurantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CMMIDemoData" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cuisines" EntityType="Self.Cuisine" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
+          <EntitySet Name="Reviews" EntityType="Self.Review" />
+          <EntitySet Name="States" EntityType="Self.State" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Restaurants_Cuisines" Association="Self.FK_Restaurants_Cuisines">
+            <End Role="Cuisines" EntitySet="Cuisines" />
+            <End Role="Restaurants" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Locations_States" Association="Self.FK_Locations_States">
+            <End Role="States" EntitySet="States" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurants_Locations" Association="Self.FK_Restaurants_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Restaurants" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Restaurants" Association="Self.FK_Reviews_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Users" Association="Self.FK_Reviews_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <EntitySet Name="ViewRestaurants" EntityType="CMMIDemoContext.ViewRestaurant" />
+          <EntitySet Name="ViewReviews" EntityType="CMMIDemoContext.ViewReview" />
+          <EntitySet Name="SysErrors" EntityType="CMMIDemoContext.SysError" />
+          <AssociationSet Name="FK_SysErrors_SysErrors" Association="CMMIDemoContext.FK_SysErrors_SysErrors">
+            <End Role="SysError" EntitySet="SysErrors" />
+            <End Role="SysError1" EntitySet="SysErrors" />
+          </AssociationSet>
+          <EntitySet Name="SysTraces" EntityType="CMMIDemoContext.SysTrace" />
+        </EntityContainer>
+        <EntityType Name="ViewRestaurant">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Restaurant" />
+            <PropertyRef Name="Cuisine" />
+            <PropertyRef Name="City" />
+            <PropertyRef Name="CreatedBy" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Restaurant" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cuisine" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ViewReview">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Restaurant" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Review" />
+            <PropertyRef Name="CreatedDate" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Restaurant" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Review" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SysError">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Exception" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Message" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Stack" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Details" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ParentId" Type="Int32" />
+          <NavigationProperty Name="SysErrors1" Relationship="CMMIDemoContext.FK_SysErrors_SysErrors" FromRole="SysError" ToRole="SysError1" />
+          <NavigationProperty Name="SysError1" Relationship="CMMIDemoContext.FK_SysErrors_SysErrors" FromRole="SysError1" ToRole="SysError" />
+        </EntityType>
+        <Association Name="FK_SysErrors_SysErrors">
+          <End Type="CMMIDemoContext.SysError" Role="SysError" Multiplicity="0..1" />
+          <End Type="CMMIDemoContext.SysError" Role="SysError1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysError">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SysError1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SysTrace">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="LogType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CMMIDemoContextStoreContainer" CdmEntityContainer="CMMIDemoData">
+          <EntitySetMapping Name="Cuisines">
+            <EntityTypeMapping TypeName="CMMIDemoContext.Cuisine">
+              <MappingFragment StoreEntitySet="Cuisines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Cuisine1" ColumnName="Cuisine" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="CMMIDemoContext.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Restaurants">
+            <EntityTypeMapping TypeName="CMMIDemoContext.Restaurant">
+              <MappingFragment StoreEntitySet="Restaurants">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Restaurant1" ColumnName="Restaurant" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="CuisineId" ColumnName="CuisineId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="CMMIDemoContext.Review">
+              <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Review1" ColumnName="Review" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="CMMIDemoContext.State">
+              <MappingFragment StoreEntitySet="States">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="State1" ColumnName="State" />
+                <ScalarProperty Name="Abreviation" ColumnName="Abreviation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CMMIDemoContext.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewRestaurants">
+            <EntityTypeMapping TypeName="CMMIDemoContext.ViewRestaurant">
+              <MappingFragment StoreEntitySet="ViewRestaurants">
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Cuisine" ColumnName="Cuisine" />
+                <ScalarProperty Name="Restaurant" ColumnName="Restaurant" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewReviews">
+            <EntityTypeMapping TypeName="CMMIDemoContext.ViewReview">
+              <MappingFragment StoreEntitySet="ViewReviews">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Review" ColumnName="Review" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Restaurant" ColumnName="Restaurant" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysErrors">
+            <EntityTypeMapping TypeName="CMMIDemoContext.SysError">
+              <MappingFragment StoreEntitySet="SysErrors">
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Stack" ColumnName="Stack" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Exception" ColumnName="Exception" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysTraces">
+            <EntityTypeMapping TypeName="CMMIDemoContext.SysTrace">
+              <MappingFragment StoreEntitySet="SysTrace">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="LogType" ColumnName="LogType" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
